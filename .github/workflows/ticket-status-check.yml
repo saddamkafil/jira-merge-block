@@ -1,4 +1,4 @@
-name: Ticket Status Check
+name: Ticket Status Check yaml
 
 on:
   pull_request:
