@@ -1,0 +1,22 @@
+name: Grep
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  check-ticket-status:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Jira ticket status
+        env:
+          JIRA_USERNAME: ${{ secrets.JIRA_USERNAME }}
+          JIRA_PASSWORD: ${{ secrets.JIRA_PASSWORD }}
+          JIRA_URL: https://your-jira-url.com/
+        run: |
+          ticket_id=$(echo ${{ github.event.pull_request.title }} | grep -o 'OPS-[0-9]*' | head -n1)
+          ticket_status=$(curl -u $JIRA_USERNAME:$JIRA_PASSWORD -H "Content-Type: application/json" $JIRA_URL/rest/api/3/issue/$ticket_id | jq '.fields.status.name')
+          if [ "$ticket_status" != "\"Ready\"" ]; then
+            echo "Ticket is not ready for merge. Aborting."
+            exit 1
+          fi
