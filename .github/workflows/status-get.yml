@@ -1,0 +1,38 @@
+name: Ticket Status Check
+
+on:
+  pull_request:
+    branches:
+      - master
+
+env:
+  JIRA_ISSUE_KEY: ${{ github.event.pull_request.head.ref }}
+
+jobs:
+  check-ticket-status:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          pip install jira
+
+      - name: Fetch Jira ticket status
+        id: get_ticket_status
+        run: |
+          JIRA_URL=https://example.atlassian.net
+          JIRA_USER=<jira_username>
+          JIRA_API_KEY=<jira_api_key>
+
+          jira_status=$(python -c "from jira import JIRA; jira = JIRA(options={'server': '$JIRA_URL'}, basic_auth=('$JIRA_USER', '$JIRA_API_KEY')); issue = jira.issue('${{ env.JIRA_ISSUE_KEY }}'); print(issue.fields.status.name)")
+
+          echo "::set-env name=JIRA_STATUS::${jira_status}"
+
+      - name: Check ticket status
+        run: |
+          if [[ "${{ env.JIRA_STATUS }}" != "Ready" ]]; then
+            echo "Error: Ticket status is not Ready"
+            exit 1
+          fi
