@@ -1,4 +1,4 @@
-name: Ticket Status Check yaml
+name: Get JiraTicket Number
 
 on:
   pull_request:
