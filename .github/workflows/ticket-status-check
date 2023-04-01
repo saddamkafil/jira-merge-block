@@ -1,0 +1,4 @@
+- name: Debug
+  run: |
+    echo "Jira Status: $JIRA_STATUS"
+    echo "Jira Issue Key: $JIRA_ISSUE_KEY"
