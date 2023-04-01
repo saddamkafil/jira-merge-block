@@ -1,4 +1,4 @@
-name: Jira Status Check
+name: Block Merge
 on:
   pull_request:
     branches:
