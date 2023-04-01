@@ -1,4 +1,18 @@
-- name: Debug
-  run: |
-    echo "Jira Status: $JIRA_STATUS"
-    echo "Jira Issue Key: $JIRA_ISSUE_KEY"
+name: Ticket Status Check
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check-ticket-status:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Debug
+        run: |
+          echo "Jira Status: $JIRA_STATUS"
+          echo "Jira Issue Key: $JIRA_ISSUE_KEY"
