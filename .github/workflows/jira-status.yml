@@ -1,0 +1,20 @@
+name: Jira Status Check
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  jira_status:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check Jira Status
+      uses: atlassian/gajira-status-check@v1.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+        JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+        JIRA_USERNAME: ${{ secrets.JIRA_USERNAME }}
+        JIRA_PASSWORD: ${{ secrets.JIRA_PASSWORD }}
+        JIRA_ISSUE_KEY: ${{ env.JIRA_ISSUE_KEY }}
+        JIRA_STATUS: "Ready"
