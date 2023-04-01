@@ -1,4 +1,4 @@
-name: Block Pull Requests for non-Ready Jira Tickets
+name: Grep
 
 on:
   pull_request:
