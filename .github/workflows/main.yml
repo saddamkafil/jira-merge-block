@@ -12,7 +12,7 @@ jobs:
         env:
           JIRA_USERNAME: ${{ secrets.JIRA_USERNAME }}
           JIRA_PASSWORD: ${{ secrets.JIRA_PASSWORD }}
-          JIRA_URL: https://your-jira-url.com/
+          JIRA_URL: https://proklouds.atlassian.net/
         run: |
           pr_url=$(jq -r .pull_request.url "$GITHUB_EVENT_PATH")
           pr_branch=$(jq -r .pull_request.head.ref "$GITHUB_EVENT_PATH")
@@ -26,7 +26,7 @@ jobs:
         env:
           JIRA_USERNAME: ${{ secrets.JIRA_USERNAME }}
           JIRA_PASSWORD: ${{ secrets.JIRA_PASSWORD }}
-          JIRA_URL: https://your-jira-url.com/
+          JIRA_URL: https://proklouds.atlassian.net/
         run: |
           ticket_status=$(curl -u $JIRA_USERNAME:$JIRA_PASSWORD -H "Content-Type: application/json" $JIRA_URL/rest/api/3/issue/$ticket_id | jq '.fields.status.name')
           if [ "$ticket_status" != "\"Ready\"" ]; then
