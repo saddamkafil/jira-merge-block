@@ -16,7 +16,7 @@ jobs:
           jira-api-token: ${{ secrets.JIRA_API_TOKEN }}
           jira-project-key: OPS
           jira-issue-key: ${{ github.event.pull_request.head.ref }}
-          allowed-statuses: ["Ready"]
+          allowed-statuses: "Ready"
       - name: Main2 YML
         if: steps.check-jira.outputs.jira-status != 'Ready'
         uses: peter-evans/create-pull-request@v3.6.2
