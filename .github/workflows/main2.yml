@@ -11,7 +11,7 @@ jobs:
       - name: Check Jira Status
         uses: atlassian/gajira-status-check@v2
         with:
-          jira-host: https://proklouds.atlassian.net/
+          jira-host: https://proklouds.atlassian.net/jira/software/projects/OPS/boards/1
           jira-email: saddamshaik.devops@gmail.com
           jira-api-token: ${{ secrets.JIRA_API_TOKEN }}
           jira-project-key: OPS
