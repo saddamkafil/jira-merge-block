@@ -17,7 +17,7 @@ jobs:
           jira-project-key: OPS
           jira-issue-key: ${{ github.event.pull_request.head.ref }}
           allowed-statuses: ["Ready"]
-      - name: Block Pull Request_main2-YML
+      - name: Main2 YML
         if: steps.check-jira.outputs.jira-status != 'Ready'
         uses: peter-evans/create-pull-request@v3.6.2
         with:
