@@ -19,7 +19,7 @@ jobs:
           allowed-statuses: "Ready"
       - name: Main2 YML
         if: steps.check-jira.outputs.jira-status != 'Ready'
-        uses: peter-evans/create-pull-request@v3.6.2
+        uses: atlassian/gajira-status-check@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "Block pull request due to Jira status not being Ready"
