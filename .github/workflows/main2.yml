@@ -1,0 +1,29 @@
+name: Main2 YML
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  check-jira:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Jira Status
+        uses: atlassian/gajira-status-check@v2
+        with:
+          jira-host: https://proklouds.atlassian.net/
+          jira-email: saddamshaik.devops@gmail.com
+          jira-api-token: ${{ secrets.JIRA_API_TOKEN }}
+          jira-project-key: OPS
+          jira-issue-key: ${{ github.event.pull_request.head.ref }}
+          allowed-statuses: ["Ready"]
+      - name: Block Pull Request_main2-YML
+        if: steps.check-jira.outputs.jira-status != 'Ready'
+        uses: peter-evans/create-pull-request@v3.6.2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Block pull request due to Jira status not being Ready"
+          branch: block-pr-${{ github.event.pull_request.number }}
+          title: "Blocked: ${{ github.event.pull_request.title }}"
+          body: "This pull request cannot be merged because the associated Jira ticket is not in Ready status."
+          delete-branch: true
