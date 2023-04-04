@@ -1,0 +1,23 @@
+name: Jira Check
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  check-jira:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Jira status check
+        uses: atlassian/gajira-status-check@v1
+        with:
+          jira-base-url: ${{ secrets.JIRA_BASE_URL }}
+          jira-api-token: ${{ secrets.JIRA_API_TOKEN }}
+          jira-email-address: ${{ secrets.JIRA_EMAIL_ADDRESS }}
+          jira-project: <YOUR_JIRA_PROJECT>
+          jira-transition-id: Review
+
