@@ -1,4 +1,4 @@
-name: jira check
+name: Jira Check
 
 on:
   pull_request:
@@ -18,5 +18,5 @@ jobs:
           jira-base-url: ${{ secrets.JIRA_BASE_URL }}
           jira-api-token: ${{ secrets.JIRA_API_TOKEN }}
           jira-email-address: ${{ secrets.JIRA_EMAIL_ADDRESS }}
-          jira-project: https://proklouds.atlassian.net/
+          jira-project: https://proklouds.atlassian.net/jira/software/projects/OPS/boards/1
           jira-transition-id: Review
