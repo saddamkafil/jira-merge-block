@@ -1,4 +1,4 @@
-name: Check Jira ticket before merging to develop
+name: Check Jira ticket before merging to developpy
 
 on:
   pull_request:
@@ -20,7 +20,7 @@ jobs:
       - name: Install Jira module
         run: pip install jira
 
-      - name: Check Jira ticket status
+      - name: Check Jira ticket statuspy
         env:
           JIRA_API_KEY: ${{ secrets.JIRA_API_KEY }}
         run: |
