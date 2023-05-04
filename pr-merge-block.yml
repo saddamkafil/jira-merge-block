@@ -1,0 +1,31 @@
+name: Test Ticket Status
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+    branches: [ develop, feature/*, release/*, hotfix/* ]
+
+jobs:
+  get-ticket-number:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Get branch name
+        run: |
+          branch_name="${{ github.head_ref }}"
+          jira_ticket="$(grep -Eo '[A-Z|a-z]{1,}\-[0-9]{1,}' <<< "$branch_name")"
+          echo "The ticket number is $jira_ticket"
+          if [ -z "$jira_ticket" ]; then
+            echo "No ticket found.  Defaulting to psssed."
+            exit 0
+          fi
+          jira_ticket_status="$(curl -u "${{secrets.JIRA_USERNAME}}":"${{secrets.JIRA_API_KEY}}" -X GET -H "Content-Type: application/json" "https://${{secrets.JIRA_HOST}}/rest/api/2/issue/${jira_ticket}?fields=status" | jq '.fields.status.name')"
+          echo Jira_status: "$jira_ticket_status"
+          if [[ "$jira_ticket_status" == "READY FOR INTEGRATION" || "$jira_ticket_status" == "READY FOR UAT" || "$jira_ticket_status" == "READY FOR PROD RELEASE" ]]; then
+              echo "Jira ticket $jira_ticket is marked as $jira_ticket_status. Merge to develop is allowed."
+              exit 0
+            else
+              echo "Jira ticket $jira_ticket is not marked as READY FOR INTEGRATION, READY FOR UAT, or READY FOR PROD RELEASE. Merge to develop is not allowed."
+              exit 1
+          fi
